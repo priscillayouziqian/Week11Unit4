@@ -27,7 +27,8 @@ public class UserServicelmpl implements UserService {
         List<String> response = new ArrayList<>();
         User user = new User(userDto);
         userRepository.saveAndFlush(user);
-        response.add("User Added Successfully");
+        //front end: redirect user to login after registering
+        response.add("http://localhost:8080/login.html");
         return response;
     }
     //2nd method: log in a user
@@ -38,7 +39,7 @@ public class UserServicelmpl implements UserService {
         Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
         if(userOptional.isPresent()){ //a method in Optionals.
             if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())){
-                response.add("User Login Successful");
+                response.add("http://localhost:8080/home.html");
                 response.add(String.valueOf(userOptional.get().getId()));
             }else{
                 response.add("Username or password incorrect");

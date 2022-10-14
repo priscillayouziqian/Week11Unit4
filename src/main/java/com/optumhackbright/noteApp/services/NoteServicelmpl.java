@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class NoteServicelmpl {
+public class NoteServicelmpl implements NoteService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private NoteRepository noteRepository;
 
     //adding a note
+    @Override
     @Transactional
     public void addNote(NoteDto noteDto, Long userId){
         Optional<User> userOptional = userRepository.findById(userId);
@@ -34,6 +35,7 @@ public class NoteServicelmpl {
         noteRepository.saveAndFlush(note); //this method belongs to JpaRepository interface of Spring Data JPA. Unlike save(), the saveAndFlush() flushed the data immediately during the execution.
     }
     //delete a note
+    @Override
     @Transactional
     public void deleteNoteById(Long noteId){
         Optional<Note> noteOptional = noteRepository.findById(noteId);
@@ -41,6 +43,7 @@ public class NoteServicelmpl {
     }
 
     //update a note
+    @Override
     @Transactional
     public void updateNoteById(NoteDto noteDto){
         Optional<Note> noteOptional = noteRepository.findById(noteDto.getId());
@@ -50,6 +53,7 @@ public class NoteServicelmpl {
         });
     }
 
+    @Override
     public List<NoteDto> getAllNotesByUserId(Long userId){
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
@@ -57,5 +61,15 @@ public class NoteServicelmpl {
             return noteList.stream().map(note -> new NoteDto(note)).collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    //method for getting a Note by the Note "id"
+    @Override
+    public Optional<NoteDto> getNoteById(Long noteId){
+        Optional<Note> noteOptional = noteRepository.findById(noteId);
+        if(noteOptional.isPresent()){
+            return Optional.of(new NoteDto(noteOptional.get()));
+        }
+        return Optional.empty();
     }
 }
