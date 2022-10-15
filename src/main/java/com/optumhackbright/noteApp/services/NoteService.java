@@ -19,8 +19,10 @@ public interface NoteService {
     @Transactional
     void updateNoteById(NoteDto noteDto);
 
+    @Transactional
     List<NoteDto> getAllNotesByUserId(Long userId);
 
     //method for getting a Note by the Note "id"
+    @Transactional
     Optional<NoteDto> getNoteById(Long noteId);
 }

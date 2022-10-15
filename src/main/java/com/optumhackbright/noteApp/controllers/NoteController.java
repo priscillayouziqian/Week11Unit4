@@ -15,7 +15,7 @@ public class NoteController {
     private NoteService noteService;
 
     //get all notes by user example:
-    @GetMapping("/user/{uderId}")
+    @GetMapping("/user/{userId}")
     public List<NoteDto> getNotesByUser(@PathVariable Long userId){
         return noteService.getAllNotesByUserId(userId);
     }
